@@ -1,7 +1,4 @@
-import home from '@/reducer/home'
-import detail from '@/reducer/detail'
+import home from "@/reducer/home";
+import auth from "@/reducer/auth";
 
-export {
-  home,
-  detail,
-}
+export { home, auth };
