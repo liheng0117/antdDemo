@@ -1,64 +1,8 @@
 import React, { Component } from "react";
 import { Table, Divider, Progress, Avatar, message } from "antd";
 import { connect } from "react-redux";
-import { get } from "@/utils/request";
+import { get, post } from "@/utils/request";
 import api from "@/services/api";
-
-const columns = [
-  {
-    title: "User",
-    dataIndex: "user",
-    key: "user",
-    render: (url) => {
-      return <Avatar style={{ backgroundColor: "#87d068" }} icon="user" />;
-    },
-  },
-  {
-    title: "First name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Age",
-    dataIndex: "msg",
-    key: "msg",
-    render: (msg) => {
-      return (
-        <Progress
-          percent={Number(msg)}
-          size="small"
-          showInfo={false}
-          style={{ width: "100px" }}
-          strokeColor={{
-            "0%": "#108ee9",
-            "100%": "#87d068",
-          }}
-        />
-      );
-    },
-  },
-  {
-    title: "Price",
-    dataIndex: "hospital",
-    key: "hospital",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text, record) => (
-      <span>
-        <a href=" ">Edit</a>
-        <Divider type="vertical" />
-        <a href=" ">Delete</a>
-      </span>
-    ),
-  },
-];
 
 export default
 @connect((state) => {
@@ -90,13 +34,79 @@ class MyTable extends Component {
       });
     });
   }
+  columns = [
+    {
+      title: "User",
+      dataIndex: "user",
+      key: "user",
+      render: (url) => {
+        return <Avatar style={{ backgroundColor: "#87d068" }} icon="user" />;
+      },
+    },
+    {
+      title: "First name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Age",
+      dataIndex: "msg",
+      key: "msg",
+      render: (msg) => {
+        return (
+          <Progress
+            percent={Number(msg)}
+            size="small"
+            showInfo={false}
+            style={{ width: "100px" }}
+            strokeColor={{
+              "0%": "#108ee9",
+              "100%": "#87d068",
+            }}
+          />
+        );
+      },
+    },
+    {
+      title: "Price",
+      dataIndex: "hospital",
+      key: "hospital",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => {
+        return (
+          <span>
+            <a href=" ">Edit</a>
+            <Divider type="vertical" />
+            <a href=" " onClick={() => this.delFn(text.id)}>
+              Delete
+            </a>
+          </span>
+        );
+      },
+    },
+  ];
+  delFn = (id) => {
+    let obj = {};
+    obj.id = id;
+    post(api.delUrl, obj).then((res) => {
+      message.info(res.info);
+    });
+  };
 
   render() {
     const { userData } = this.state;
     return (
       <div>
         <Table
-          columns={columns}
+          columns={this.columns}
           dataSource={userData}
           pagination={{ pageSize: 5 }}
         />
