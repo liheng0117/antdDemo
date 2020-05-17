@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Input, Button, Upload, message, Icon } from "antd";
 import { post } from "@/utils/request";
+import { getData } from "@/actions/home";
 import api from "@/services/api";
 import { connect } from "react-redux";
 
@@ -21,16 +22,28 @@ const props = {
   },
 };
 export default
-@connect((state) => {
-  return {
-    user: state.auth.user,
-  };
-})
+@connect(
+  (state) => {
+    return {
+      user: state.auth.user,
+      data: state.home.data,
+    };
+  },
+  {
+    getData,
+  }
+)
 @Form.create({
   mapPropsToFields(props) {
     return {
-      username: Form.createFormField({
-        value: "",
+      name: Form.createFormField({
+        value: props.data.name,
+      }),
+      msg: Form.createFormField({
+        value: props.data.msg,
+      }),
+      hospital: Form.createFormField({
+        value: props.data.hospital,
       }),
     };
   },
@@ -48,12 +61,22 @@ class MyForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        values.gender = post(api.addUrl, values).then((res) => {
-          message.info(res.info);
-          if (res.status === "200") {
-            this.props.history.push("/table");
-          }
-        });
+        if (this.props.data) {
+          post(api.updateUrl, this.props.data).then((res) => {
+            message.info(res.message);
+            if (res.status === "200") {
+              this.props.getData("");
+              this.props.history.push("/table");
+            }
+          });
+        } else {
+          values.gender = post(api.addUrl, values).then((res) => {
+            message.info(res.info);
+            if (res.status === "200") {
+              this.props.history.push("/table");
+            }
+          });
+        }
       }
     });
   };

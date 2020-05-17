@@ -5,4 +5,5 @@ export default {
   addUrl: "https://api.baxiaobu.com/index.php/home/v5/add",
   pageUrl: "https://blogs.zdldove.top/Home/Apis/listWithPage",
   delUrl: "https://api.baxiaobu.com/index.php/home/v5/deleteUser",
+  updateUrl: "https://api.baxiaobu.com/index.php/home/v5/updateUser",
 };

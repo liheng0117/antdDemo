@@ -1,15 +1,21 @@
 import React, { Component } from "react";
 import { Table, Divider, Progress, Avatar, message } from "antd";
 import { connect } from "react-redux";
+import { getData } from "@/actions/home";
 import { get, post } from "@/utils/request";
 import api from "@/services/api";
 
 export default
-@connect((state) => {
-  return {
-    user: state.auth.user,
-  };
-})
+@connect(
+  (state) => {
+    return {
+      user: state.auth.user,
+    };
+  },
+  {
+    getData,
+  }
+)
 class MyTable extends Component {
   state = {
     userData: [],
@@ -83,7 +89,9 @@ class MyTable extends Component {
       render: (text, record) => {
         return (
           <span>
-            <a href=" ">Edit</a>
+            <a href="/myform" onClick={() => this.updateFn(text)}>
+              Edit
+            </a>
             <Divider type="vertical" />
             <a href=" " onClick={() => this.delFn(text.id)}>
               Delete
@@ -93,12 +101,18 @@ class MyTable extends Component {
       },
     },
   ];
+  //  点击删除
   delFn = (id) => {
     let obj = {};
     obj.id = id;
     post(api.delUrl, obj).then((res) => {
       message.info(res.info);
     });
+  };
+
+  //  点击修改
+  updateFn = (val) => {
+    this.props.getData(val);
   };
 
   render() {
