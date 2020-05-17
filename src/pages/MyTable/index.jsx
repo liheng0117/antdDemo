@@ -90,6 +90,7 @@ class MyTable extends Component {
       });
     });
   }
+
   render() {
     const { userData } = this.state;
     return (

@@ -57,6 +57,10 @@ class MyForm extends Component {
       }
     });
   };
+  // 清空表单
+  handleResetClick = (e) => {
+    this.props.form.resetFields();
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -90,7 +94,12 @@ class MyForm extends Component {
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
-            <Button style={{ margin: "0 15px" }}>Cancel</Button>
+            <Button
+              style={{ margin: "0 15px" }}
+              onClick={this.handleResetClick}
+            >
+              Cancel
+            </Button>
           </Form.Item>
         </Form>
       </div>
