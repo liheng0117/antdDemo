@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { Home, Login, Reg } from "./assembly";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { Home, Login, Reg, Echart, MyTable, MyForm, Sample } from "./assembly";
 
 export default class Router extends React.Component {
   render() {
@@ -9,7 +9,15 @@ export default class Router extends React.Component {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/reg" component={Reg} />
-          <Route path="/" component={Home} />
+          <Home {...this.props}>
+            <Switch>
+              <Route path="/table" component={MyTable} />
+              <Route path="/echart" component={Echart} />
+              <Route path="/myform" component={MyForm} />
+              <Route path="/sample" component={Sample} />
+              <Redirect path="/" to="/echart" />
+            </Switch>
+          </Home>
         </Switch>
       </BrowserRouter>
     );

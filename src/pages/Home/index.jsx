@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getUser } from "@/actions/auth";
-import { Layout, Menu, Icon, Input, Avatar, message, Progress } from "antd";
+import { Layout, Menu, Icon, Input, Avatar, Progress } from "antd";
 import "./style.less";
 import headImg from "@/utils/img/header.png";
+import { Link } from "react-router-dom";
 
 const { Search } = Input;
 const { Header, Content, Sider } = Layout;
@@ -24,14 +25,6 @@ export default
   }
 )
 class Home extends Component {
-  //  路由守卫
-  constructor(props) {
-    super(props);
-    if (!this.props.user) {
-      message.info("请先登录");
-      this.props.history.push("/login");
-    }
-  }
   //  退出登录
   export = () => {
     this.props.getUser("");
@@ -68,7 +61,7 @@ class Home extends Component {
             <Sider className="home-sider">
               <Menu
                 mode="inline"
-                defaultSelectedKeys={["1"]}
+                defaultSelectedKeys={["5"]}
                 style={{ height: "100%", borderRight: 0 }}
               >
                 <Menu.Item key="1">
@@ -84,19 +77,27 @@ class Home extends Component {
                   <MyIcon type="iconcafe" />
                 </Menu.Item>
                 <Menu.Item key="4">
-                  <span>Form Elements</span>
+                  <Link to="/myform">
+                    <span>Form Elements</span>
+                  </Link>
                   <MyIcon type="iconyoujian" />
                 </Menu.Item>
                 <Menu.Item key="5">
-                  <span>Chart</span>
+                  <Link to="/echart">
+                    <span>Chart</span>
+                  </Link>
                   <MyIcon type="iconbicycle" />
                 </Menu.Item>
                 <Menu.Item key="6">
-                  <span>Table</span>
+                  <Link to="/table">
+                    <span>Table</span>
+                  </Link>
                   <MyIcon type="iconios" />
                 </Menu.Item>
                 <Menu.Item key="7">
-                  <span>Sample Pages</span>
+                  <Link to="/sample">
+                    <span>Sample Pages</span>
+                  </Link>
                   <MyIcon type="iconhotel" />
                 </Menu.Item>
                 <div className="sider-bottom">
@@ -132,7 +133,7 @@ class Home extends Component {
                   minHeight: 280,
                 }}
               >
-                Content
+                {this.props.children}
               </Content>
             </Layout>
           </Layout>
