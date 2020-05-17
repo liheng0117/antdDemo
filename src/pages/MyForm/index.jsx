@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Form, Input, Button, Upload, message, Icon } from "antd";
 import { post } from "@/utils/request";
 import api from "@/services/api";
+import { connect } from "react-redux";
 
 const props = {
   name: "file",
@@ -20,6 +21,11 @@ const props = {
   },
 };
 export default
+@connect((state) => {
+  return {
+    user: state.auth.user,
+  };
+})
 @Form.create({
   mapPropsToFields(props) {
     return {
@@ -30,6 +36,14 @@ export default
   },
 })
 class MyForm extends Component {
+  //  路由守卫
+  constructor(props) {
+    super(props);
+    if (!this.props.user) {
+      message.info("请先登录");
+      this.props.history.push("/login");
+    }
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {

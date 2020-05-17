@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Table, Divider, Progress, Avatar } from "antd";
+import { Table, Divider, Progress, Avatar, message } from "antd";
+import { connect } from "react-redux";
 import { get } from "@/utils/request";
 import api from "@/services/api";
 
@@ -59,10 +60,24 @@ const columns = [
   },
 ];
 
-export default class MyTable extends Component {
+export default
+@connect((state) => {
+  return {
+    user: state.auth.user,
+  };
+})
+class MyTable extends Component {
   state = {
     userData: [],
   };
+  //  路由守卫
+  constructor(props) {
+    super(props);
+    if (!this.props.user) {
+      message.info("请先登录");
+      this.props.history.push("/login");
+    }
+  }
   componentDidMount() {
     get(api.listUrl).then((res) => {
       let newData = [];

@@ -1,14 +1,30 @@
 import React, { Component } from "react";
 import { Pagination } from "antd";
 import { post } from "@/utils/request";
+import { message } from "antd";
+import { connect } from "react-redux";
 import api from "@/services/api";
 import "./style.less";
 
-export default class Sample extends Component {
+export default
+@connect((state) => {
+  return {
+    user: state.auth.user,
+  };
+})
+class Sample extends Component {
   state = {
     data: [],
     count: 1,
   };
+  //  路由守卫
+  constructor(props) {
+    super(props);
+    if (!this.props.user) {
+      message.info("请先登录");
+      this.props.history.push("/login");
+    }
+  }
   pageFn = (current) => {
     let obj = { page: current };
     post(api.pageUrl, obj).then((res) => {
@@ -21,7 +37,6 @@ export default class Sample extends Component {
   componentDidMount() {
     let obj = { page: this.state.count };
     post(api.pageUrl, obj).then((res) => {
-      console.log(res);
       this.setState({
         data: res.result.list,
       });
