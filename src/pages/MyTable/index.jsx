@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Divider, Progress } from "antd";
+import { Table, Divider, Progress, Avatar } from "antd";
 import { get } from "@/utils/request";
 import api from "@/services/api";
 
@@ -9,7 +9,7 @@ const columns = [
     dataIndex: "user",
     key: "user",
     render: (url) => {
-      return <img src={url} alt="" />;
+      return <Avatar style={{ backgroundColor: "#87d068" }} icon="user" />;
     },
   },
   {
@@ -22,7 +22,18 @@ const columns = [
     dataIndex: "msg",
     key: "msg",
     render: (msg) => {
-      return <Progress percent={Number(msg)} size="small" showInfo={false} />;
+      return (
+        <Progress
+          percent={Number(msg)}
+          size="small"
+          showInfo={false}
+          style={{ width: "100px" }}
+          strokeColor={{
+            "0%": "#108ee9",
+            "100%": "#87d068",
+          }}
+        />
+      );
     },
   },
   {
@@ -59,7 +70,6 @@ export default class MyTable extends Component {
         element.key = element.id;
         newData.push(element);
       });
-
       this.setState({
         userData: newData,
       });
