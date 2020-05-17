@@ -79,7 +79,7 @@ class Home extends Component {
             <Sider className="home-sider">
               <Menu
                 mode="inline"
-                defaultSelectedKeys={["5"]}
+                defaultSelectedKeys={["6"]}
                 style={{ height: "100%", borderRight: 0 }}
               >
                 <Menu.Item key="1">

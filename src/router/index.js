@@ -15,7 +15,7 @@ export default class Router extends React.Component {
               <Route path="/echart" component={Echart} />
               <Route path="/myform" component={MyForm} />
               <Route path="/sample" component={Sample} />
-              <Redirect path="/" to="/echart" />
+              <Redirect path="/" to="/table" />
             </Switch>
           </Home>
         </Switch>
