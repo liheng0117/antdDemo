@@ -61,6 +61,7 @@ class MyForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        // 判断是修改还是增加
         if (this.props.data) {
           post(api.updateUrl, this.props.data).then((res) => {
             message.info(res.message);

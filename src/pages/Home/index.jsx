@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getUser } from "@/actions/auth";
+import { getSearch } from "@/actions/search";
 import { Layout, Menu, Icon, Input, Avatar, Progress } from "antd";
-import "./style.less";
 import headImg from "@/utils/img/header.png";
 import { Link } from "react-router-dom";
+import { get } from "@/utils/request";
+import api from "@/services/api";
+import "./style.less";
 
 const { Search } = Input;
 const { Header, Content, Sider } = Layout;
@@ -22,6 +25,7 @@ export default
   },
   {
     getUser,
+    getSearch,
   }
 )
 class Home extends Component {
@@ -29,6 +33,17 @@ class Home extends Component {
   export = () => {
     this.props.getUser("");
     this.props.history.push("/login");
+  };
+  //  点击搜索
+  searchFn = (value) => {
+    get(api.searchUrl + "?keyword=" + value).then((res) => {
+      if (res.status === "200") {
+        res.users.forEach((element) => {
+          element.key = element.id;
+        });
+      }
+      this.props.getSearch(res.users);
+    });
   };
   render() {
     return (
@@ -40,7 +55,10 @@ class Home extends Component {
             </div>
             <div className="header-content">
               <p>
-                <Search placeholder="input search text" />
+                <Search
+                  placeholder="input search text"
+                  onSearch={(value) => this.searchFn(value)}
+                />
               </p>
               <p>
                 <Icon type="eye" />

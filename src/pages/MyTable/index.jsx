@@ -10,6 +10,7 @@ export default
   (state) => {
     return {
       user: state.auth.user,
+      data: state.search.data,
     };
   },
   {
@@ -117,11 +118,16 @@ class MyTable extends Component {
 
   render() {
     const { userData } = this.state;
+    const searchData = this.props.data;
     return (
       <div>
         <Table
           columns={this.columns}
-          dataSource={userData}
+          dataSource={
+            searchData !== undefined && searchData.length !== 0
+              ? searchData
+              : userData
+          }
           pagination={{ pageSize: 5 }}
         />
       </div>
